@@ -133,6 +133,8 @@ def main():
             help='number of learning iteration')
     parser.add_argument('--opt', type=str, choices=['SGD', 'ADAM'], default='ADAM',
             help='optimization method')
+    parser.add_argument('--sgd_lr', type=float, default=1.0, metavar='VAL',
+            help='learning ratio of SGD')
     parser.add_argument('--silent', default=False, action='store_true',
             help='whether prints out progress status and estimation results')
     parser.add_argument('--gpu', type=int, default=-1, metavar='Z',
@@ -152,7 +154,7 @@ def main():
         model.to_gpu()
 
     if args.opt == 'SGD':
-        optimizer = optimizers.SGD()
+        optimizer = optimizers.SGD(lr=args.sgd_lr)
     elif args.opt == 'ADAM':
         optimizer = optimizers.Adam()
     else:
