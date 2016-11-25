@@ -17,7 +17,7 @@ def complete_sequence(seq_len, type):
     return x
 
 class MyModel(chainer.Chain):
-    def __init__(self, n_vocabs, n_units, n_layers, train=True):
+    def __init__(self, n_vocabs, n_units, n_layers):
         super(MyModel, self).__init__(
                 emb = L.EmbedID(n_vocabs, n_units),
                 lstm = chainer.ChainList(),
@@ -29,7 +29,6 @@ class MyModel(chainer.Chain):
         for param in self.params():
             param.data[...] = np.random.uniform(-0.2, 0.2, param.data.shape)
 
-        self.train = train
         self.n_layers = n_layers
 
     def __call__(self, x):
@@ -147,7 +146,7 @@ def main():
 
     n_vocabs = args.seq_len
     train_iter = MyIterator(args.seq_len)
-    model = L.Classifier(MyModel(n_vocabs, args.n_units, args.n_layers, train=True))
+    model = L.Classifier(MyModel(n_vocabs, args.n_units, args.n_layers))
 
     if args.gpu >= 0:
         chainer.cuda.get_device(args.gpu).use()
@@ -180,7 +179,6 @@ def main():
     if args.verbose:
         eval_model = model.copy()
         eval_rnn = eval_model.predictor
-        eval_rnn.train = False
         prediction_test(eval_rnn, args.seq_len)
 
 main()
