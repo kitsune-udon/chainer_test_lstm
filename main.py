@@ -110,8 +110,8 @@ def prediction_test(predictor, seq_len):
     test_sequences = [complete_sequence(seq_len, 1), complete_sequence(seq_len, 2)]
     map(lambda x: x.pop(), test_sequences)
     print("input:{}".format(test_sequences))
-    expected = map(lambda x: x[0], test_sequences)
-    predicted = map(lambda x: predict(predictor, x), test_sequences)
+    expected = list(map(lambda x: x[0], test_sequences))
+    predicted = list(map(lambda x: predict(predictor, x), test_sequences))
     print("expected:{}".format(expected))
     print("predicted:{}".format(predicted))
     if predicted == expected:
